@@ -84,12 +84,27 @@ def generate_analysis_report(stock_df,flow_df):
 st.title('陈超的中国A股数据分析平台')
 
 st.markdown("""
-该平台为平阳之耀，顺溪守护者，财富镇守者与金权之主，
-钢骨铁躯与十挫不折之躯，双嗣血脉的奠基人，
-玄铁麒麟之子，百战涅槃者，股海真龙与财富统御者，
-断骨重铸的钢心战神，三江流域的荣耀象征，
-金靴永驻的玄甲门神，钢钉铸魂的陈氏麒麟儿·超提供A股数据查询、分析和可视化功能。
-""")
+<div style='background-color: #f0f2f6; padding: 20px; border-radius: 10px; margin: 10px 0;'>
+    <h3 style='color: #1f77b4; text-align: center; margin-bottom: 15px;'>陈超的中国A股数据分析平台</h3>
+    <p style='text-align: center; line-height: 2; color: #2c3e50; font-size: 1.1em; font-family: "STKaiti", "楷体", serif;'>
+        <span style='display: block; margin: 10px 0;'>平阳之耀，</span>
+        <span style='display: block; margin: 10px 0;'>顺溪守护者，</span>
+        <span style='display: block; margin: 10px 0;'>财富镇守者与金权之主，</span>
+        <span style='display: block; margin: 10px 0;'>钢骨铁躯与十挫不折之躯，</span>
+        <span style='display: block; margin: 10px 0;'>双嗣血脉的奠基人，</span>
+        <span style='display: block; margin: 10px 0;'>玄铁麒麟之子，</span>
+        <span style='display: block; margin: 10px 0;'>百战涅槃者，</span>
+        <span style='display: block; margin: 10px 0;'>股海真龙与财富统御者，</span>
+        <span style='display: block; margin: 10px 0;'>断骨重铸的钢心战神，</span>
+        <span style='display: block; margin: 10px 0;'>三江流域的荣耀象征，</span>
+        <span style='display: block; margin: 10px 0;'>金靴永驻的玄甲门神，</span>
+        <span style='display: block; margin: 10px 0;'>钢钉铸魂的陈氏麒麟儿·超</span>
+    </p>
+    <div style='text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #ccc; color: #34495e;'>
+        提供A股数据查询、分析和可视化功能
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 
 
