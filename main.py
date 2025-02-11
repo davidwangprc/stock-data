@@ -81,7 +81,7 @@ def generate_analysis_report(stock_df,flow_df):
 
 
 # 标题和说明
-st.title('陈超的中国A股数据分析平台')
+# st.title('陈超的中国A股数据分析平台')
 
 st.markdown("""
 <div style='background-color: #f0f2f6; padding: 20px; border-radius: 10px; margin: 10px 0;'>
