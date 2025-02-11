@@ -1,0 +1,11 @@
+akshare
+streamlit
+pandas
+plotly
+numpy
+datetime
+langchain_core
+langchain_community
+protobuf<4.0.0
+flatbuffers>=2.0
+absl-py
