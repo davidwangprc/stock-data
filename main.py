@@ -96,7 +96,7 @@ st.markdown("""
         <span style='display: block; margin: 10px 0;'>百战涅槃者，</span>
         <span style='display: block; margin: 10px 0;'>股海真龙与财富统御者，</span>
         <span style='display: block; margin: 10px 0;'>断骨重铸的钢心战神，</span>
-        <span style='display: block; margin: 10px 0;'>三江流域的荣耀象征，</span>
+        <span style='display: block; margin: 10px 0;'>鳌江流域的荣耀象征，</span>
         <span style='display: block; margin: 10px 0;'>金靴永驻的玄甲门神，</span>
         <span style='display: block; margin: 10px 0;'>钢钉铸魂的陈氏麒麟儿·超</span>
     </p>
