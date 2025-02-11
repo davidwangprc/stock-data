@@ -9,7 +9,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_community.llms import Ollama
 
 # 页面配置
-st.set_page_config(page_title="中国A股数据分析平台", layout="wide")
+st.set_page_config(
+    page_title="中国A股数据分析平台",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # 添加缓存装饰器
 
@@ -27,9 +31,9 @@ def get_stock_history(symbol, start_date, end_date, adjust):
 
 # 获取股票基本信息
 @st.cache_data(ttl=3600)
-def get_stock_info(symbol):
+def get_stock_info(stock_code):
     """获取股票基本信息"""
-    return ak.stock_individual_info_em(symbol=symbol)
+    return ak.stock_individual_info_em(symbol=stock_code)
 
 # 获取龙虎榜数据
 @st.cache_data(ttl=3600)
@@ -52,6 +56,42 @@ def get_stock_individual_fund_flow_df(stock_code):
     except Exception as e:
         st.error(f"获取个股资金流向数据失败: {str(e)}")
         return None
+
+# 获取财务报表-东财
+def get_stock_balance_sheet(stock_code:str) -> pd.DataFrame:
+    """获取财务报表-东财
+    - 资产负债表-按报告期
+    - 资产负债表-按年度
+    - 利润表-按报告期
+    - 利润表-按年度
+    - 利润表-按单季度
+    - 现金流量表-按报告期
+    - 现金流量表-按年度
+    - 现金流量表-按单季度
+    """
+    #资产负债表-按报告期
+    stock_balance_sheet_by_report_em_df = ak.stock_balance_sheet_by_report_em(symbol=stock_code)
+    #资产负债表-按年度
+    stock_balance_sheet_by_yearly_em_df = ak.stock_balance_sheet_by_yearly_em(symbol=stock_code)
+    #利润表-按报告期
+    stock_profit_sheet_by_report_em_df = ak.stock_profit_sheet_by_report_em(symbol=stock_code)
+    #利润表-按年度
+    stock_profit_sheet_by_yearly_em_df = ak.stock_profit_sheet_by_yearly_em(symbol=stock_code)
+    #利润表-按单季度
+    stock_profit_sheet_by_quarterly_em_df = ak.stock_profit_sheet_by_quarterly_em(symbol=stock_code)
+    #现金流量表-按报告期
+    stock_cash_flow_sheet_by_report_em_df = ak.stock_cash_flow_sheet_by_report_em(symbol=stock_code)
+    #现金流量表-按年度
+    stock_cash_flow_sheet_by_yearly_em_df = ak.stock_cash_flow_sheet_by_yearly_em(symbol=stock_code)
+    #现金流量表-按单季度
+    stock_cash_flow_sheet_by_quarterly_em_df = ak.stock_cash_flow_sheet_by_quarterly_em(symbol=stock_code)
+
+    return stock_balance_sheet_by_report_em_df,stock_balance_sheet_by_yearly_em_df,stock_profit_sheet_by_report_em_df,stock_profit_sheet_by_yearly_em_df,stock_profit_sheet_by_quarterly_em_df,stock_cash_flow_sheet_by_report_em_df,stock_cash_flow_sheet_by_yearly_em_df,stock_cash_flow_sheet_by_quarterly_em_df
+
+# 获取财务指标-东财
+def get_stock_financial_analysis_indicator(stock_code:str) -> pd.DataFrame:
+    """获取财务指标-东财"""
+    return ak.stock_financial_analysis_indicator(symbol=stock_code)
 
 # 生成股票分析报告
 def generate_analysis_report(stock_df,flow_df):
@@ -85,7 +125,7 @@ def generate_analysis_report(stock_df,flow_df):
 
 st.markdown("""
 <div style='background-color: #f0f2f6; padding: 20px; border-radius: 10px; margin: 10px 0;'>
-    <h3 style='color: #1f77b4; text-align: center; margin-bottom: 15px;'>陈超的中国A股数据分析平台</h3>
+    <h3 style='color: #1f77b4; text-align: center; margin-bottom: 15px;'>陈超的投资数据分析平台</h3>
     <p style='text-align: center; line-height: 2; color: #2c3e50; font-size: 1.1em; font-family: "STKaiti", "楷体", serif;'>
         <span style='display: block; margin: 10px 0;'>平阳之耀，</span>
         <span style='display: block; margin: 10px 0;'>顺溪守护者，</span>
@@ -96,7 +136,7 @@ st.markdown("""
         <span style='display: block; margin: 10px 0;'>百战涅槃者，</span>
         <span style='display: block; margin: 10px 0;'>股海真龙与财富统御者，</span>
         <span style='display: block; margin: 10px 0;'>断骨重铸的钢心战神，</span>
-        <span style='display: block; margin: 10px 0;'>鳌江流域的荣耀象征，</span>
+        <span style='display: block; margin: 10px 0;'>三江流域的荣耀象征，</span>
         <span style='display: block; margin: 10px 0;'>金靴永驻的玄甲门神，</span>
         <span style='display: block; margin: 10px 0;'>钢钉铸魂的陈氏麒麟儿·超</span>
     </p>
@@ -348,7 +388,33 @@ try:
         else:
             st.info("暂无个股资金流向数据")
 
-
+        # 添加财务报表数据
+        st.subheader("💰 财务报表数据")
+        symbol = f"SH{stock_code}" if stock_code.startswith("6") else f"SZ{stock_code}"
+        stock_balance_sheet_by_report_em_df,stock_balance_sheet_by_yearly_em_df,stock_profit_sheet_by_report_em_df,stock_profit_sheet_by_yearly_em_df,stock_profit_sheet_by_quarterly_em_df,stock_cash_flow_sheet_by_report_em_df,stock_cash_flow_sheet_by_yearly_em_df,stock_cash_flow_sheet_by_quarterly_em_df = get_stock_balance_sheet(symbol)
+        tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8 = st.tabs(["资产负债表-按报告期","资产负债表-按年度","利润表-按报告期","利润表-按年度","利润表-按单季度","现金流量表-按报告期","现金流量表-按年度","现金流量表-按单季度"])
+        with tab1:
+            st.dataframe(stock_balance_sheet_by_report_em_df)
+        with tab2:
+            st.dataframe(stock_balance_sheet_by_yearly_em_df)
+        with tab3:
+            st.dataframe(stock_profit_sheet_by_report_em_df)
+        with tab4:
+            st.dataframe(stock_profit_sheet_by_yearly_em_df)
+        with tab5:  
+            st.dataframe(stock_profit_sheet_by_quarterly_em_df)
+        with tab6:
+            st.dataframe(stock_cash_flow_sheet_by_report_em_df)
+        with tab7:
+            st.dataframe(stock_cash_flow_sheet_by_yearly_em_df)
+        with tab8:
+            st.dataframe(stock_cash_flow_sheet_by_quarterly_em_df)  
+            
+        # 添加财务指标数据
+        st.subheader("💰 财务指标数据")
+        stock_financial_analysis_indicator_df = get_stock_financial_analysis_indicator(stock_code)
+        st.dataframe(stock_financial_analysis_indicator_df)
+            
         # 添加龙虎榜数据
         st.subheader("🏆 龙虎榜数据")
         lhb_tab1 = st.tabs(["龙虎榜数据"])[0]
